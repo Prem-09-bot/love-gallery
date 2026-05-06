@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import axios from "axios";
 import "./index.css";
 import Hearts from "./Hearts.js";
@@ -12,16 +12,16 @@ function Gallery() {
   const token = localStorage.getItem("token");
 
   // Fetch images
-  const fetchImages = async () => {
+  const fetchImages = useCallback(async () => {
     const res = await axios.get("https://love-gallery-oz0o.onrender.com/api/photos", {
       headers: { Authorization: token }
     });
     setImages(res.data);
-  };
+  },[token]);
 
   useEffect(() => {
     fetchImages();
-  }, []);
+  }, [fetchImages]);
 
   // Upload image
   const upload = async () => {
@@ -114,8 +114,7 @@ function Gallery() {
             }}
             onClick={() => setSelectedImage(imgObj)}
           >
-            <img
-              src={imgObj.image}
+            <img src={imgObj.image} alt={imgObj.caption || "memory"} 
               style={{
                 width: "100%",
                 height: "300px",
@@ -184,8 +183,7 @@ function Gallery() {
           }}
         >
           <div style={{ textAlign: "center" }}>
-            <img
-              src={selectedImage.image}
+            <img src={selectedImage.image} alt="memory" 
               style={{
                 maxWidth: "90%",
                 maxHeight: "80%",
