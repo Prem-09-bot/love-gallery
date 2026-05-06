@@ -10,10 +10,11 @@ function Gallery() {
   const [selectedImage, setSelectedImage] = useState(null);
 
   const token = localStorage.getItem("token");
+  const API = "https://love-gallery-oz0o.onrender.com";
 
   // Fetch images
   const fetchImages = useCallback(async () => {
-    const res = await axios.get("https://love-gallery-oz0o.onrender.com/api/photos", {
+    const res = await axios.get(`${API}/api/photos`, {
       headers: { Authorization: token }
     });
     setImages(res.data);
@@ -32,7 +33,7 @@ function Gallery() {
     formData.append("caption", caption);
 
     await axios.post(
-      "https://love-gallery-oz0o.onrender.com/api/photos/upload",
+      `${API}/api/photos/upload`,
       formData,
       { headers: { Authorization: token } }
     );
@@ -45,7 +46,7 @@ function Gallery() {
   // Delete image
   const deleteImage = async (img) => {
     await axios.delete(
-      `https://love-gallery-oz0o.onrender.com/api/photos/${img}`,
+      `${API}/api/photos/${img}`,
       { headers: { Authorization: token } }
     );
 
